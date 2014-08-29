@@ -3,9 +3,11 @@ package com.example.ninokhodabandeh.ui;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.inputmethodservice.KeyboardView;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,12 +26,19 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.ninokhodabandeh.ui.Models.UserParameters;
+import com.example.ninokhodabandeh.ui.Services.ApiServices;
+import com.google.android.gms.common.api.Api;
+
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    Context _context;
 
     // UI elements
     Spinner spinner;
@@ -46,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        _context = this;
 
         // load UI
         loadSpinner();
@@ -74,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void loadSpinner(){
         spinner = (Spinner) findViewById(R.id.spinner_premisesArray);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.premises_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(_context, R.array.premises_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -112,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void activateUserInputIfRequested(LinearLayout layout){
 
-        editText = new EditText(getApplicationContext());
+        editText = new EditText(_context);
         editText.setId(R.id.editText_userInput);
         editText.setHint(getString(R.string.typeOfBusiness));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -148,31 +159,82 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onClickGoButton(View view) {
-
+        String locationType;
         _dropDownSelected = spinner.getSelectedItem().toString();
         _radius = String.valueOf(seekBar.getProgress());
 
         if (userInputExist) {
             String userInput = editText.getText().toString();
-            if (userInput != null || userInput != "") {
+            if (userInput != null || !userInput.equals("")) {
                 _userInput = userInput;
             }
         }
 
         if (_dropDownSelected.equals(UiUtils.DEFAULT_USER_SELECTION)) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            displayDialog(getString(R.string.mustSelect));
 
-            builder.setTitle(R.string.mustSelectHeading).setMessage(R.string.mustSelect);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }else {
+        } else if (userInputExist && (_userInput == null || _userInput.equals(""))) {
+
+            displayDialog(getString(R.string.mustEnter));
+
+        } else {
             // todo: if we have all the args call the api and get results
+            locationType = userInputExist ? _userInput : _dropDownSelected;
+            UserParameters parameters = new UserParameters(locationType, Integer.parseInt(_radius));
+            AsyncTask<UserParameters, Void, Void> task = new CallApiWithPrgressBarAsync();
+            task.execute(parameters);
+        }
+    }
 
-            Intent resultActivity = new Intent(this, ResultActivity.class);
-            startActivity(resultActivity);
+    private void displayDialog(String message){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+        builder.setTitle(R.string.mustSelectHeading).setMessage(message);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private class CallApiWithPrgressBarAsync extends AsyncTask<UserParameters, Void, Void>{
+
+        private ProgressDialog _progressDialog;
+        ArrayList<ApiServices.ApiResultModel> apiResult;
+        @Override
+        protected void onPreExecute() {
+            _progressDialog = new ProgressDialog(_context);
+            _progressDialog.setTitle("processing");
+            _progressDialog.setCancelable(false);
+            _progressDialog.setIndeterminate(true);
+            _progressDialog.show();
         }
 
+        @Override
+        protected Void doInBackground(UserParameters... params) {
+            try{
+                // todo: we should remove the tread and call the ApiService
+                UserParameters userInput = params[0];
+                // todo: call the api service
 
+                Thread.sleep(5000);
+                ApiServices apiServices = new ApiServices();
+                apiResult = apiServices.getResultFromApi(userInput);
+
+            }catch (InterruptedException ex){
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(_progressDialog != null){
+                _progressDialog.dismiss();
+            }
+            Intent intent = new Intent(_context, ResultActivity.class);
+            intent.putParcelableArrayListExtra(UiUtils.API_RESULT_FOR_LOCATIONS, apiResult);
+            startActivity(intent);
+            super.onPostExecute(aVoid);
+        }
     }
 }

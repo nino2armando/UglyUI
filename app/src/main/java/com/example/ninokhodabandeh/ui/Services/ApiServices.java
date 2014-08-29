@@ -1,6 +1,11 @@
 package com.example.ninokhodabandeh.ui.Services;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.example.ninokhodabandeh.ui.Interfaces.IApiService;
+import com.example.ninokhodabandeh.ui.Models.UserParameters;
 
 import java.text.Format;
 import java.util.ArrayList;
@@ -9,10 +14,10 @@ import java.util.List;
 /**
  * Created by nino.khodabandeh on 8/28/2014.
  */
-public class ApiServices {
+public class ApiServices implements IApiService {
     // todo: we need to call api and get some results
 
-    public static ArrayList<ApiResultModel> getFakeApiContent(){
+    private static ArrayList<ApiResultModel> getFakeApiContent(){
         ArrayList<ApiResultModel> listViewContent = new ArrayList<ApiResultModel>(){{
             add(new ApiResultModel(1, "Grumppy cat's fishery, 100 West 1st street", "2.3"));
             add(new ApiResultModel(2, "Mall, 34 East main 1st street", "23.2"));
@@ -28,7 +33,12 @@ public class ApiServices {
         return listViewContent;
     }
 
-    public static class ApiResultModel {
+    @Override
+    public ArrayList<ApiResultModel> getResultFromApi(UserParameters parameters) {
+        return getFakeApiContent();
+    }
+
+    public static class ApiResultModel implements Parcelable {
         public int Id;
         public String Content;
         public String Distance;
@@ -39,6 +49,12 @@ public class ApiServices {
            Distance = distance;
            Content = content;
        }
+
+        public ApiResultModel(Parcel in){
+            Id = in.readInt();
+            Content = in.readString();
+            Distance = in.readString();
+        }
 
        public int getId(){
            return this.Id;
@@ -51,5 +67,29 @@ public class ApiServices {
        public String getDistance(){
            return String.format("%1$s km", this.Distance);
        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(Id);
+            dest.writeString(Content);
+            dest.writeString(Distance);
+        }
+
+        public static final Creator<ApiResultModel> CREATOR = new Creator<ApiResultModel>() {
+            @Override
+            public ApiResultModel createFromParcel(Parcel source) {
+                return new ApiResultModel(source);
+            }
+
+            @Override
+            public ApiResultModel[] newArray(int size) {
+                return new ApiResultModel[size];
+            }
+        };
     }
 }
