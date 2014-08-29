@@ -15,7 +15,8 @@
             android:id="@+id/modelDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#7FD15E"/>
 
         <TextView
             android:id="@+id/modelContent"
