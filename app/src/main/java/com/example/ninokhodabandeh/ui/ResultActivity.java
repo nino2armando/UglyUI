@@ -1,16 +1,13 @@
 package com.example.ninokhodabandeh.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.ninokhodabandeh.ui.Services.ApiServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by nino.khodabandeh on 8/28/2014.
@@ -35,7 +32,8 @@ public class ResultActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent mapActivity = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(mapActivity);
             }
         });
     }

@@ -14,7 +14,6 @@
     <string name="mustSelect">Please choose what you are looking for from the drop down</string>
     <string name="mustSelectHeading">Note</string>
 
-
     <string-array name="premises_array">
         <item>Choose</item>
         <item>Gas Stations</item>
@@ -22,4 +21,7 @@
         <item>Malls</item>
         <item>@string/letMeChoose</item>
     </string-array>
+
+    <string name="title_activity_maps">Map</string>
+
 </resources>
