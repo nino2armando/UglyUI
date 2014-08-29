@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_marginTop="15sp"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="1"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textSize="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="20dp"
+            android:padding="3dp"
+            android:background="#2F2F2F"
+            android:layout_weight="0.06"
+            android:textColor="#EEEEEE" />
+
+        <Spinner
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_premisesArray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/within"
+            android:textSize="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="20dp"
+            android:padding="3dp"
+            android:background="#2F2F2F"
+            android:layout_weight="0.06"
+            android:textColor="#EEEEEE" />
+
+        <SeekBar
+            android:progress="50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_weight="0.06"
+            android:layout_marginTop="20dp"
+            android:minHeight="11dip"
+            android:minWidth="11dip"/>
+
+        <TextView
+            android:layout_gravity="end"
+            android:id="@+id/seekBar_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaultvalue"/>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:text="@string/go"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/button_go"
+            android:onClick="onClickGoButton"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

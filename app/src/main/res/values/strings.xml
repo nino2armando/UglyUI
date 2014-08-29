@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">UI</string>
+    <string name="action_settings">Settings</string>
+    <string name="or">Or, let me enter my own</string>
+    <string name="description">Please enter the type of place you are looking for</string>
+    <string name="go">Go</string>
+    <string name="within">Find within(miles)</string>
+    <string name="defaultvalue">50/100</string>
+    <string name="letMeChoose">Let me enter</string>
+    <string name="typeOfBusiness">Type of business</string>
+    <string name="defaultEntry">default</string>
+    <string name="mustSelect">Please choose what you are looking for from the drop down</string>
+    <string name="mustSelectHeading">Note</string>
+
+
+    <string-array name="premises_array">
+        <item>Choose</item>
+        <item>Gas Stations</item>
+        <item>Food &amp; Beverages</item>
+        <item>Malls</item>
+        <item>@string/letMeChoose</item>
+    </string-array>
+</resources>
