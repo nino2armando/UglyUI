@@ -214,9 +214,9 @@ public class MainActivity extends ActionBarActivity {
             try{
                 // todo: we should remove the tread and call the ApiService
                 UserParameters userInput = params[0];
-                // todo: call the api service
 
-                Thread.sleep(5000);
+                // todo: remove the thread sleep
+                Thread.sleep(2000);
                 ApiServices apiServices = new ApiServices();
                 apiResult = apiServices.getResultFromApi(userInput);
 
