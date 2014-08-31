@@ -1,25 +1,19 @@
 package com.example.ninokhodabandeh.ui;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.KeyboardView;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -28,12 +22,8 @@ import android.widget.TextView;
 
 import com.example.ninokhodabandeh.ui.Models.UserParameters;
 import com.example.ninokhodabandeh.ui.Services.ApiServices;
-import com.google.android.gms.common.api.Api;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -216,11 +206,11 @@ public class MainActivity extends ActionBarActivity {
                 UserParameters userInput = params[0];
 
                 // todo: remove the thread sleep
-                Thread.sleep(2000);
+                //Thread.sleep(2000);
                 ApiServices apiServices = new ApiServices();
                 apiResult = apiServices.getResultFromApi(userInput);
 
-            }catch (InterruptedException ex){
+            }catch (Exception ex){
                 ex.printStackTrace();
             }
             return null;

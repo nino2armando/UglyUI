@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,23 +18,40 @@ import java.util.ArrayList;
  */
 public class ResultActivity extends ActionBarActivity {
 
+    ArrayList<ApiServices.ApiResultModel> _resultSet;
     Context _context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         _context = this;
 
+        if(savedInstanceState != null){
+            String a = savedInstanceState.getString("nino");
+        }
         // load UI
         loadListView();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("nino", _resultSet);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadListView(){
         ListView listView = (ListView) findViewById(R.id.listView_apiResult);
 
         Intent mainActivityIntent = getIntent();
-        ArrayList<ApiServices.ApiResultModel> resultSet = mainActivityIntent.getParcelableArrayListExtra(UiUtils.API_RESULT_FOR_LOCATIONS);
-        CustomAdapter adapter = new CustomAdapter(this, resultSet);
+        _resultSet = mainActivityIntent.getParcelableArrayListExtra(UiUtils.API_RESULT_FOR_LOCATIONS);
+        CustomAdapter adapter = new CustomAdapter(this, _resultSet);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
